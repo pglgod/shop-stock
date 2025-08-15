@@ -22,17 +22,17 @@ app.use('/api', require('./router/buyer'));
 app.use('/api', require('./router/products'));
 app.use('/api', require('./router/address'));
 
-// app.use(express.static("public"))
+app.use(express.static("public"))
 
 
-app.use('/', (req, res)=>{
-        const obj ={
-            "app": "shopstock.com",
-            "version": "1.0.0",
-        }
-        res.json({ message : "welcome to ShopStock", obj, formattedDateTime});
-    }
-)
+// app.use('/', (req, res)=>{
+//         const obj ={
+//             "app": "shopstock.com",
+//             "version": "1.0.0",
+//         }
+//         res.json({ message : "welcome to ShopStock", obj, formattedDateTime});
+//     }
+// )
 
 
 
