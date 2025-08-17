@@ -25,7 +25,7 @@ const BuyerSchema = new Schema({
         default: ""
     },
     dob: {
-        type: Date,
+        type: String,
         default: ""
     },
     password: {

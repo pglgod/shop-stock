@@ -176,14 +176,10 @@ router.post('/buyer/signin', [
     } 
 )
 
-router.post('/buyer/get/profileinformation', fetchUser, async (req, res)=>{
+router.post('/buyer/get/profile', fetchUser, async (req, res)=>{
     try {
-        
         const buyerId = req.user.id;
-
-        // const data = await Buyer.findById({buyerId}).select("-password");
         const data = await Buyer.findOne({"_id" : buyerId}).select("-password");
-
         if (!data) {
             success = false;
             return res.status(404).json({success: success, message : "user not found.."})
@@ -191,13 +187,49 @@ router.post('/buyer/get/profileinformation', fetchUser, async (req, res)=>{
             success = true;
             return res.status(200).json({success: success, user : data})
         }
-
-
     } catch (error) {
         success =false;
         return res.status(500).json({success: success, error: error, });
     }
 });
+
+router.put( '/buyer/edit/profile', fetchUser, async (req, res)=>{
+    try {
+        const buyerId = req.user.id;
+
+        const { name, email, phone, gender, dob, altPhone } = req.body;
+        const updatedFields = {};
+        if (name) updatedFields.name = name;
+        if (email) updatedFields.email = email;
+        if (phone) updatedFields.phone = phone;
+        if (gender) updatedFields.gender = gender;
+        if (dob) updatedFields.dob = dob;
+        if (altPhone) updatedFields.altPhone = altPhone;
+
+        let user = await Buyer.findByIdAndUpdate(
+            buyerId,
+            { $set: updatedFields },
+            { new: true }
+        ).select("-password");
+
+        if (!user) {
+            success = false;
+            return res.status(500).json({success: success, message : "some error ocurd", });
+        } else {
+            success = true;
+            return res.status(200).json({success : success, message: "profile updated.."})
+        }
+
+    } catch (error) {
+        success =false;
+        return res.status(500).json({success: success, error: error, });
+    }
+} )
+
+
+
+
+
 
 
 
